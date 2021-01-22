@@ -1,14 +1,8 @@
-data "google_compute_image" "my_image" {
-  family  = "debian-9"
-  project = "debian-cloud"
-}
 
 resource "google_compute_disk" "for_each_ssd_disk" {
 
   count = length(var.disks)
   name = "${var.kube_cluster}-${count.index}"
-  image = data.google_compute_image.my_image.self_link
-  type  = "pd-ssd"
   size = var.disks[count.index].size
   zone  = var.zone
 

@@ -1,7 +1,10 @@
-FROM google/cloud-sdk:latest
+FROM bitnami/kubectl:1.20.2
+
+USER root
 
 # install jq for json formatting
-RUN apt-get -y install jq
+RUN apt-get update \
+    && apt-get -y install jq
 
 # download and install istioctl
 RUN cd /usr/local/bin \
@@ -9,6 +12,8 @@ RUN cd /usr/local/bin \
     
 ENV PATH="/usr/local/bin/istio-1.8.1/bin:${PATH}"
 
-COPY ./docker-entrypoint.sh /
+USER 1000
+
+COPY ./scripts/docker-entrypoint.sh /docker-entrypoint.sh
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]

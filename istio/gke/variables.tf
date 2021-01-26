@@ -6,17 +6,14 @@ variable "region" {
   description = "region"
 }
 
-variable "gke_username" {
-  default     = ""
-  description = "gke username"
-}
-
-variable "gke_password" {
-  default     = ""
-  description = "gke password"
-}
-
-variable "gke_num_nodes" {
-  default     = 1
+variable "node_count" {
   description = "number of gke nodes"
+}
+
+variable "node_machine_type" {
+  description = "node machine type"
+}
+
+variable "controller_machine_type" {
+  description = "controller machine type"
 }

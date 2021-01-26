@@ -9,7 +9,7 @@ docker-push:
 
 docker-run:
 	docker run \
-	-e CLUSTER_NAME=$(cluster-name) \
-	-e PROJECT_NAME=$(project-name) \
-	-e REGION=$(region) \
-	$(builder-name):$(builder-version)
+	-v $(key_location_local):$(key_location_vm) \
+	-e GOOGLE_APPLICATION_CREDENTIALS=$(key_location_vm)/$(key_filename_local) \
+	-e KUBECONFIG=./kubeconfig.yaml \
+	--rm $(builder-name):$(builder-version)

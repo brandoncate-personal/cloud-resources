@@ -4,15 +4,20 @@ resource "google_container_cluster" "primary" {
   location = var.region
 
   remove_default_node_pool = true
-  initial_node_count       = 1
+  initial_node_count       = var.node_count
 
   network    = google_compute_network.vpc.name
   subnetwork = google_compute_subnetwork.subnet.name
 
-  master_auth {
-    username = var.gke_username
-    password = var.gke_password
+  node_config {
+    machine_type = var.controller_machine_type
+  }
 
+  release_channel {
+    channel = "RAPID"
+  }
+
+  master_auth {
     client_certificate_config {
       issue_client_certificate = false
     }
@@ -24,9 +29,10 @@ resource "google_container_node_pool" "primary_nodes" {
   name       = "${google_container_cluster.primary.name}-node-pool"
   location   = var.region
   cluster    = google_container_cluster.primary.name
-  node_count = var.gke_num_nodes
+  node_count = var.node_count
 
   node_config {
+
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
@@ -36,8 +42,10 @@ resource "google_container_node_pool" "primary_nodes" {
       env = var.project_id
     }
 
-    # preemptible  = true
-    machine_type = "n1-standard-1"
+    # preemptible instances are MUCH cheaper but can at any time go down
+    preemptible  = true
+
+    machine_type = var.node_machine_type
     tags         = ["gke-node", "${var.project_id}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"

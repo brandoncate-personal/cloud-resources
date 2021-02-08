@@ -12,7 +12,7 @@ RUN cd /usr/local/bin \
     
 ENV PATH="/usr/local/bin/istio-1.8.1/bin:${PATH}"
 
-USER 1000
+# USER 1000
 
 COPY ./scripts/docker-entrypoint.sh /docker-entrypoint.sh
 

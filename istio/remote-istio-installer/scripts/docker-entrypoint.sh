@@ -1,8 +1,13 @@
 #!/bin/bash
 
+if [[ ! -z "${REMOTE_KUBECONFIG}" ]]; then
+    curl -o kubeconfig.yaml -L $REMOTE_KUBECONFIG
+    export KUBECONFIG=/kubeconfig.yaml
+fi
+
 istioctl operator init
 kubectl create namespace istio-system --dry-run=client -o yaml | kubectl apply -f -
-kubectl apply -f ./istioinstall.yaml
+kubectl apply -f /usr/local/config/istioinstall.yaml
 
 kubectl label namespace default istio-injection=enabled --overwrite
 

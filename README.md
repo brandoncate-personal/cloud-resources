@@ -1,6 +1,9 @@
 # Description
 This repo contains the scripts used to create the gcp and aws resources
 
+## TODO
+Add checkov and tfsec scans (possible use soluble's iacbot)
+
 ## Volumes
 terraform script used to create volumes with a scheduled snapshot cycle
 
